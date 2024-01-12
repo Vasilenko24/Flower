@@ -24,27 +24,67 @@ body {
 #result {
   display: none;
 }
-
-.options {
-  list-style: none;
-  padding: 0;
-}
 .hidden {
   display: none;
 }
-.option {
-  margin: 5px;
-  cursor: pointer;
-  border: 2px solid #2b2222;
-  padding: 10px;
-  border-radius: 5px;
+.options {
+  display: flex;
 }
-.option.active {
-  border: 2px solid red;
+.options > div {
+  margin-right: 24px;
+}
+.options > div:last-child {
+  margin-right: 0px;
 }
 
-.option:hover {
-  background-color: #f4f4f4;
+/* colors */
+
+.square {
+  cursor: pointer;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  border: 1px solid #dedede;
+}
+.square.active {
+  border: 1px solid transparent;
+}
+.square.active::before {
+  position: absolute;
+  content: "";
+  border: 2px solid #783697;
+  top: -6px;
+  left: -6px;
+  width: 108px;
+  height: 108px;
+  border-radius: 8px;
+}
+.square.active::after {
+  position: absolute;
+  content: url(images/icon.svg);
+  border-radius: 50%;
+  border: 1px solid #fff;
+  right: -8px;
+  bottom: -8px;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  background-color: #783697;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* weddingFilter */
+
+.image-size {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 8px;
 }
 
 /* last screen */
