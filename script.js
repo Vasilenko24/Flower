@@ -1,11 +1,12 @@
+import formState from './state.js';
+
+
 const options = document.querySelectorAll('.option')
 const screen = document.querySelectorAll('.screen')
 const form = document.getElementById('form')
 const result = document.getElementById('result')
 let count = 1
-let formState = {
-    amount: []
-}
+
 
 // showing filtres
 function showScreen() {
@@ -22,29 +23,70 @@ document.getElementById('show').addEventListener('click', () => {
     document.querySelector('.description-show').classList.toggle('hid')
 })
 
-// handling clicks 
-// options.forEach(el => {
-//     el.addEventListener('click', () => {
-//         el.classList.toggle('active')
-//     })
-// })
+
+function handlingClick(elemets, event) {
+    elemets.forEach(el => {
+        el.classList.remove('active')
+        event.classList.add('active')
+    })
+}
+
 
 // last form/result
 function showForm() {
     screen.forEach(item => {
         item.classList.add('hidden')
     })
-    document.getElementById('colors').innerHTML = `<div>Цвет</div> <div>${formState.colors}</div>`
-    document.getElementById('ceremony').innerHTML = `<div>Wеремония</div> <div>${formState.ceremony}</div>`
-    document.getElementById('flowers').innerHTML = `<div>Цветы</div> <div>${formState.flowers}</div>`
+    document.getElementById('service').innerHTML = `<div>Service:</div> <div>${formState.service}</div>`
+    document.getElementById('colors').innerHTML = `<div>Colors:</div> <div>${formState.colors}</div>`
+    document.getElementById('flowers').innerHTML = `<div>Flowers</div> <div>${formState.flowers}</div>`
+    document.getElementById('ceremon').innerHTML = `<div>Style:</div> <div>${formState.style}</div>`
+
     document.getElementById('total').innerHTML = `${formState.amount}`
 
     form.classList.remove('hidden')
 }
 
+// Function to create image elements
+function createImageElement(imageSrc) {
+    const imgElement = document.createElement('img');
+    imgElement.src = imageSrc;
+    imgElement.alt = 'Flower Image';
+    imgElement.classList.add('filtred-images')
+    return imgElement;
+}
+
+
+// shouw decriptions based on previous info
+
+function showArrangment() {
+    formState.colors.forEach(color => {
+        formState.flowers.forEach(flower => {
+            const images = formState.images[color][flower];
+            if (images) {
+                images.forEach(imageData => {
+                    console.log(imageData);
+                    const imagePath = `images/show/${imageData.image}`
+                    const image = createImageElement(imagePath)
+                    document.getElementById('imageGallery').appendChild(image)
+                })
+            }
+        })
+    })
+}
+
+
+
 // switching filtres
+
 document.querySelectorAll('.next').forEach(item => item.addEventListener('click', () => {
     const length = screen.length
+    console.log(length);
+    if (count === 4) {
+        console.log('yses');
+        showScreen()
+        showArrangment()
+    }
     if (count === length) {
         showForm()
     } else {
@@ -53,24 +95,30 @@ document.querySelectorAll('.next').forEach(item => item.addEventListener('click'
     }
 }))
 
+
+
+
+
+// Display images based on colors and flowers
+
+
+
+
+
 const changeFilterState = (state) => {
     const colorFilter = document.querySelectorAll('.colorFilter'),
+        serviceFilter = document.querySelectorAll('.serviceFilter'),
         weddingFilter = document.querySelectorAll('.weddingFilter'),
         flowersFilter = document.querySelectorAll('.flowersFilter')
 
     function bindActionToElems(event, elems, prop) {
         elems.forEach((item) => {
-            item.addEventListener(event, () => {
+            item.addEventListener(event, (e) => {
                 // Check if the property exists in the state object
-                if (item.classList.contains('square')) {
-                    item.classList.toggle('active')
-                }
+                const target = e.target
                 if (!state[prop]) {
                     state[prop] = [];
                 }
-
-                // Toggle the value in the state array
-                // const amount = item.getAttribute('value')
                 const value = item.getAttribute('id');
                 const index = state[prop].indexOf(value)
                 if (index === -1) {
@@ -82,15 +130,26 @@ const changeFilterState = (state) => {
                     state[prop].splice(index, 1);
                 }
 
+                if (item.classList.contains('serviceFilter')) {
+                    state[prop] = []
+                    handlingClick(serviceFilter, target)
+                    if (item.classList.contains('active')) state[prop].push(value)
+                }
+
+                if (item.classList.contains('square')) {
+                    item.classList.toggle('active')
+                }
                 console.log(state);
             });
         });
     }
-
+    bindActionToElems('click', serviceFilter, 'service');
     bindActionToElems('click', colorFilter, 'colors');
-    bindActionToElems('click', weddingFilter, 'ceremony');
+    bindActionToElems('click', weddingFilter, 'style');
     bindActionToElems('click', flowersFilter, 'flowers');
+
 }
 
 
 changeFilterState(formState)
+

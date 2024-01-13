@@ -13,7 +13,13 @@
 body {
   height: 100vh;
 }
-
+h1 {
+  font-family: Lexend;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 50px;
+  margin-bottom: 48px;
+}
 .container {
   max-width: 1040px;
   height: 100vh;
@@ -27,6 +33,22 @@ body {
 .hidden {
   display: none;
 }
+.next {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 48px;
+  cursor: pointer;
+  width: 108px;
+  height: 56px;
+  border-radius: 12px;
+  background: #a2e7f6;
+  transition: 0.2s ease-in;
+  border: none;
+}
+.next:hover {
+  background-color: #783697;
+}
 .options {
   display: flex;
 }
@@ -36,7 +58,32 @@ body {
 .options > div:last-child {
   margin-right: 0px;
 }
+/* serviceFilter */
 
+.serviceFilter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid #c2c2c2;
+  border-radius: 6px;
+  width: 250px;
+  font-family: Inter;
+  font-size: 22px;
+  font-weight: 600;
+  height: 100px;
+}
+
+.serviceFilter.active::before {
+  position: absolute;
+  content: "";
+  border: 2px solid #783697;
+  top: -6px;
+  left: -6px;
+  width: 260px;
+  height: 108px;
+  border-radius: 8px;
+}
 /* colors */
 
 .square {
@@ -85,6 +132,24 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 8px;
+}
+
+/* ceremony bouquets */
+.ceremony-bouquets {
+  display: flex;
+}
+
+/* filtred-images */
+#imageGallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+.filtred-images {
+  width: 195px;
+  height: 193px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* last screen */

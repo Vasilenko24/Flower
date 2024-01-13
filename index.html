@@ -9,6 +9,18 @@
   <body>
     <div class="container">
       <div id="screen1" class="screen" data-modal>
+        <h1>What services you need decorations for?</h1>
+        <div class="options">
+          <div id="ceremony" class="serviceFilter">Ceremony</div>
+          <div id="Reception" class="serviceFilter">Reception</div>
+          <div id="Ceremony & Reception" class="serviceFilter">
+            Ceremony & Reception
+          </div>
+          <!-- Add more color options as needed -->
+        </div>
+        <button class="next">Next</button>
+      </div>
+      <div id="screen2" class="screen" data-modal>
         <h1>Choose flower colors</h1>
         <div class="options">
           <div
@@ -28,10 +40,10 @@
           ></div>
           <!-- Add more color options as needed -->
         </div>
-        <button class="next">Далее</button>
+        <button class="next">Next</button>
       </div>
 
-      <div id="screen2" class="screen" data-modal>
+      <div id="screen3" class="screen" data-modal>
         <h1>Choose your wedding style</h1>
         <div class="options">
           <div id="Classic" class="weddingFilter square">
@@ -43,13 +55,13 @@
 
           <!-- Add more wedding type options as needed -->
         </div>
-        <button class="next">Далее</button>
+        <button class="next">Next</button>
       </div>
 
-      <div id="screen3" class="screen" data-modal>
+      <div id="screen4" class="screen" data-modal>
         <h1>Flower Preferences</h1>
         <div class="options">
-          <div id="rose" class="flowersFilter square">
+          <div id="roses" class="flowersFilter square">
             <img src="images/flowers/rose.png" alt="" />
           </div>
           <div id="pions" class="flowersFilter square">
@@ -57,50 +69,43 @@
           </div>
           <!-- Add more wedding type options as needed -->
         </div>
-        <button class="next">Далее</button>
+        <button class="next">Next</button>
       </div>
+      <div id="screen5" class="screen" data-modal>
+        <h1>Choose Ceremony Arrangement</h1>
+        <div class="ceremony-tab">
+          <!-- <div class="ceremony-bouquets">
+            <div class="ceremony-bouquet1">
+              <div class="ceremony-bouquet1__img">
+                <img
+                  class="bouquet-img"
+                  src="images/bouquets/bouquet1.png"
+                  alt=""
+                />
+              </div>
+              <div class="ceremony-bouquet1__name">Bridal Bouquet</div>
+              <div class="ceremony-bouquet1__amount">0 items</div>
+            </div>
 
-      <div id="screen4" class="screen" data-modal>
-        <h1>Screen 3: Choose flowers</h1>
-        <div class="custom-number-input">
-          <label for="custom-input-number">Counter Input</label>
-          <div class="counter-input-group">
-            <button data-action="decrement" class="button">
-              <svg
-                viewBox="0 0 448 512"
-                width="100%"
-                aria-label="minus icon"
-                role="img"
-                title="minus"
-              >
-                <path
-                  d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+            <div class="ceremony-bouquet2">
+              <div class="ceremony-bouquet1__img">
+                <img
+                  class="bouquet-img"
+                  src="images/bouquets/bouquet2.png"
+                  alt=""
                 />
-              </svg>
-            </button>
-            <input
-              type="number"
-              name="custom-input-number"
-              id="custom-input-number"
-              min="0"
-              value="0"
-            />
-            <button data-action="increment" class="button">
-              <svg
-                viewBox="0 0 448 512"
-                width="100%"
-                aria-label="plus icon"
-                role="img"
-                title="plus"
-              >
-                <path
-                  d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                />
-              </svg>
-            </button>
+              </div>
+              <div class="ceremony-bouquet1__name">Bridesmaid Bouquet</div>
+              <div class="ceremony-bouquet1__amount">0 items</div>
+            </div>
+          </div> -->
+          <div id="imageGallery"></div>
+
+          <div class="ceremony-items">
+            <div class="ceremony-item1"></div>
           </div>
         </div>
-        <button class="next">Далее</button>
+        <button class="next">Next</button>
       </div>
 
       <form id="form" class="forms hidden" action="">
@@ -122,16 +127,16 @@
           <span id="show">Show the details ></span>
           <div class="description-show hid">
             <h2>Details</h2>
-            <p id="name" class="spread"><span>Цветы</span></p>
-            <p id="email" class="spread">Email</p>
-            <p id="phone" class="spread">Phone</p>
+            <p id="name" class="spread"></p>
+            <p id="email" class="spread"></p>
+            <p id="phone" class="spread"></p>
             <div class="border" class="spread"></div>
-            <p id="service" class="spread">Service</p>
-            <div id="style" class="spread">Style</div>
+            <p id="service" class="spread"></p>
+            <div id="style" class="spread"></div>
             <div id="colors" class="spread"></div>
-            <div id="flowers" class="spread">Flowers</div>
-            <p id="ceremony" class="spread">Ceremony</p>
-            <p id="reciption" class="spread">Reception</p>
+            <div id="flowers" class="spread"></div>
+            <p id="ceremon" class="spread"></p>
+            <p id="reciption" class="spread"></p>
             <div class="border" class="spread"></div>
             <p id="labor" class="spread">Labor</p>
             <p id="taxes" class="spread">Taxes</p>
@@ -143,6 +148,9 @@
         <button type="submit" class="send">Arrange my Wedding</button>
       </form>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="state.js"></script>
+
+    <!-- Include script.js as a module -->
   </body>
 </html>
