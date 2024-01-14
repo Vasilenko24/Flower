@@ -140,18 +140,54 @@ h1 {
 }
 
 /* filtred-images */
+.ceremony-tab {
+  position: relative;
+}
+#totalAmount {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #imageGallery {
   display: flex;
   flex-wrap: wrap;
 }
+.imageGallery-block {
+  display: flex;
+  flex-direction: column;
+}
+.imageGallery-block.active > .imagewrap::before {
+  position: absolute;
+  content: url(images/icon.svg);
+  border-radius: 50%;
+  border: 1px solid #fff;
+  right: -8px;
+  bottom: -8px;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  background-color: #783697;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.imagewrap {
+  position: relative;
+  max-width: 241px;
+  height: 200px;
+}
 .filtred-images {
-  width: 195px;
-  height: 193px;
+  max-width: 241px;
+  height: 200px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
-
+.quantity.hidden {
+  display: none;
+}
 /* last screen */
 
 .image-logo img {

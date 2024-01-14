@@ -24,7 +24,8 @@ const formState = {
                 price: 120
             },
             {
-                image: "pink_rose_2.png"
+                image: "pink_rose_2.png",
+                price: 120
             }],
             pions: [{
                 image: "pink_pion_1.png",

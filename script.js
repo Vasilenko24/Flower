@@ -4,7 +4,7 @@ import formState from './state.js';
 const options = document.querySelectorAll('.option')
 const screen = document.querySelectorAll('.screen')
 const form = document.getElementById('form')
-const result = document.getElementById('result')
+let totalAmount = document.getElementById('totalAmount')
 let count = 1
 
 
@@ -48,13 +48,80 @@ function showForm() {
 }
 
 // Function to create image elements
-function createImageElement(imageSrc) {
-    const imgElement = document.createElement('img');
+function createImageElement(imageSrc, price) {
+    let imgBlock = document.createElement('div');
+
+    let imgWrap = document.createElement('div')
+    imgWrap.classList.add('imagewrap')
+
+    let imgElement = document.createElement('img');
+    imgBlock.classList.add('imageGallery-block');
     imgElement.src = imageSrc;
     imgElement.alt = 'Flower Image';
-    imgElement.classList.add('filtred-images')
-    return imgElement;
+    imgElement.classList.add('filtred-images');
+
+    let spanElement = document.createElement('span');
+    spanElement.textContent = `${price || 'N/A'}`;
+
+    // Create input field for quantity
+    let quantity = document.createElement('div')
+    quantity.classList.add('quantity', 'hidden')
+    let quantityInput = document.createElement('input');
+    quantityInput.classList.add('quantity-input')
+    quantityInput.type = 'number'
+    quantityInput.value = 0
+    quantityInput.min = 0
+
+    let increaseButton = document.createElement('button')
+    increaseButton.textContent = '+'
+    increaseButton.classList.add('quantity-button', 'increase')
+
+    let decreaseButton = document.createElement('button')
+    decreaseButton.textContent = '-'
+    decreaseButton.classList.add('quantity-button', 'decrease')
+
+    // Append elements to the imgBlock
+    imgWrap.appendChild(imgElement)
+
+    quantity.appendChild(decreaseButton);
+    quantity.appendChild(quantityInput);
+    quantity.appendChild(increaseButton);
+
+    imgBlock.appendChild(imgWrap);
+    imgBlock.appendChild(spanElement);
+    imgBlock.appendChild(quantity)
+
+
+    imgWrap.addEventListener('click', () => {
+        imgBlock.classList.toggle('active')
+        if (imgBlock.classList.contains('active')) {
+            quantity.classList.toggle('hidden')
+        } else {
+            quantity.classList.add('hidden')
+        }
+    })
+    increaseButton.addEventListener('click', () => handleQuantityButtonClick(increaseButton, quantityInput, spanElement));
+    decreaseButton.addEventListener('click', () => handleQuantityButtonClick(decreaseButton, quantityInput, spanElement));
+
+    return imgBlock;
 }
+function handleQuantityButtonClick(button, quantityInput, spanElement) {
+    let currentInputValue = parseInt(quantityInput.value)
+    const flowerPrice = spanElement.textContent
+    const spanText = 'from $'
+    const clearPrice = +flowerPrice.replace(spanText, '').trim()
+
+    if (button.classList.contains('increase')) {
+        totalAmount.textContent = (+totalAmount.textContent + clearPrice)
+        quantityInput.value = currentInputValue + 1
+    }
+    if (button.classList.contains('decrease') && currentInputValue > 0) {
+        totalAmount.textContent = (+totalAmount.textContent - clearPrice)
+        quantityInput.value = currentInputValue - 1
+    }
+}
+
+// filtredClicks on images from state
 
 
 // shouw decriptions based on previous info
@@ -65,10 +132,15 @@ function showArrangment() {
             const images = formState.images[color][flower];
             if (images) {
                 images.forEach(imageData => {
-                    console.log(imageData);
+                    const price = `from $${imageData.price}`
                     const imagePath = `images/show/${imageData.image}`
-                    const image = createImageElement(imagePath)
+                    const image = createImageElement(imagePath, price)
+
                     document.getElementById('imageGallery').appendChild(image)
+
+
+
+                    // document.querySelector('.price').appendChild(price)
                 })
             }
         })
@@ -88,6 +160,7 @@ document.querySelectorAll('.next').forEach(item => item.addEventListener('click'
         showArrangment()
     }
     if (count === length) {
+        formState.amount = totalAmount.textContent
         showForm()
     } else {
         count++
