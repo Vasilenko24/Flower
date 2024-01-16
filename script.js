@@ -1,22 +1,27 @@
 import formState from './state.js';
-
+console.log(formState);
 
 const options = document.querySelectorAll('.option')
 const screen = document.querySelectorAll('.screen')
+const filtred = document.querySelectorAll('.filtred')
 const form = document.getElementById('form')
 let totalAmount = document.getElementById('totalAmount')
 let count = 1
 
-
 // showing filtres
-function showScreen() {
+function showScreen(screen, string, count) {
     screen.forEach(item => {
         item.classList.add('hidden')
-        document.getElementById(`screen${count}`).classList.remove('hidden')
+        document.getElementById(`${string}${count}`).classList.remove('hidden')
     })
 }
-showScreen(count)
-
+showScreen(screen, 'screen', count)
+// hide all filtres 
+function hideScreen(screen, string) {
+    screen.forEach(item => {
+        item.classList.add('hidden')
+    })
+}
 // showDetails
 
 document.getElementById('show').addEventListener('click', () => {
@@ -48,9 +53,9 @@ function showForm() {
 }
 
 // Function to create image elements
-function createImageElement(imageSrc, price) {
+function createImageElement(imageSrc, price, dataId) {
     let imgBlock = document.createElement('div');
-
+    imgBlock.setAttribute('data-id', dataId)
     let imgWrap = document.createElement('div')
     imgWrap.classList.add('imagewrap')
 
@@ -126,27 +131,102 @@ function handleQuantityButtonClick(button, quantityInput, spanElement) {
 
 // shouw decriptions based on previous info
 
+// Вызываем функцию при загрузке страницы или при необходимости
+
 function showArrangment() {
-    formState.colors.forEach(color => {
-        formState.flowers.forEach(flower => {
-            const images = formState.images[color][flower];
-            if (images) {
-                images.forEach(imageData => {
-                    const price = `from $${imageData.price}`
-                    const imagePath = `images/show/${imageData.image}`
-                    const image = createImageElement(imagePath, price)
+    const btn = document.querySelectorAll('.next-filter');
+    const hideElement = (elementId) => document.getElementById(elementId).classList.add('hidden')
+    const showElement = (elementId) => document.getElementById(elementId).classList.remove('hidden')
+    formState.service.forEach(item => {
+        switch (item) {
+            case 'Ceremony':
+                showElement('filter1')
+                document.querySelector('.filter-wrapper').classList.remove('hidden')
+                btn.forEach(btn => btn.addEventListener('click', () => {
+                    hideElement('filter1')
+                    document.querySelector('.filter-wrapper').classList.add('hidden')
+                    formState.amount = totalAmount.textContent
+                    showForm()
+                }))
+                break;
+            case 'Reception':
+                showElement('filter2')
+                document.querySelector('.filter-wrapper').classList.remove('hidden')
+                btn.forEach(btn => btn.addEventListener('click', () => {
+                    hideElement('filter2')
+                    document.querySelector('.filter-wrapper').classList.add('hidden')
+                    formState.amount = totalAmount.textContent
+                    showForm()
+                }))
+                break;
+            case 'Ceremony & Reception':
+                let count = 1
+                showScreen(filtred, 'filter', count++)
+                document.querySelector('.filter-wrapper').classList.remove('hidden')
+                btn.forEach(btn => btn.addEventListener('click', () => {
+                    if (count > filtred.length) {
+                        formState.amount = totalAmount.textContent
+                        document.querySelector('.filter-wrapper').classList.add('hidden')
+                        hideScreen(filtred)
+                        showForm()
+                    } else {
+                        showScreen(filtred, 'filter', count++)
+                    }
 
-                    document.getElementById('imageGallery').appendChild(image)
-
-
-
-                    // document.querySelector('.price').appendChild(price)
-                })
-            }
-        })
+                }))
+                break;
+        }
     })
 }
 
+function tabs() {
+    const btns = document.querySelectorAll('.filter-container div');
+    btns.forEach(btn => btn.addEventListener('click', (e) => {
+        const targetId = e.target.getAttribute('id');
+        let containerId;
+        let targetItem;
+
+        switch (targetId) {
+            case 'crown':
+            case 'bridalBouquet':
+                containerId = 'filter1';
+                targetItem = formState.ceremony.find(item => item.id === targetId);
+                break;
+            case 'arch':
+                containerId = 'filter2';
+                targetItem = formState.reception.find(item => item.id === targetId);
+                break;
+        }
+
+        if (targetItem) {
+            const container = document.getElementById(containerId).querySelector('#imageGallery');
+            const existingImages = container.querySelectorAll(`[data-id='${targetId}']`);
+
+            // Если изображения уже есть в галерее
+            if (existingImages.length > 0) {
+                // Переключаем видимость изображений
+                Array.from(existingImages).forEach(img => img.classList.toggle('hidden'));
+            } else {
+                // Если изображений нет, добавляем их
+                formState.colors.forEach(color => {
+                    formState.flowers.forEach(flower => {
+                        const images = targetItem[color][flower];
+                        if (images) {
+                            images.forEach(imageData => {
+                                const price = `from $${imageData.price}`;
+                                const imagePath = `images/show/${imageData.image}`;
+                                const image = createImageElement(imagePath, price, targetId);
+                                container.appendChild(image);
+                            });
+                        }
+                    });
+                });
+            }
+        }
+    }));
+}
+
+tabs();
 
 
 // switching filtres
@@ -154,17 +234,18 @@ function showArrangment() {
 document.querySelectorAll('.next').forEach(item => item.addEventListener('click', () => {
     const length = screen.length
     console.log(length);
-    if (count === 4) {
-        console.log('yses');
-        showScreen()
+    if (count === length) {
+        hideScreen(screen)
+        // console.log('yses');
+        // showScreen()
         showArrangment()
     }
     if (count === length) {
-        formState.amount = totalAmount.textContent
-        showForm()
+        // formState.amount = totalAmount.textContent
+        // showForm()
     } else {
         count++
-        showScreen()
+        showScreen(screen, 'screen', count)
     }
 }))
 

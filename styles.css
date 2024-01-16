@@ -154,10 +154,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
 }
-.imageGallery-block {
-  display: flex;
-  flex-direction: column;
-}
+
 .imageGallery-block.active > .imagewrap::before {
   position: absolute;
   content: url(images/icon.svg);

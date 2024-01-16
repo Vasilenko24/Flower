@@ -11,7 +11,7 @@
       <div id="screen1" class="screen" data-modal>
         <h1>What services you need decorations for?</h1>
         <div class="options">
-          <div id="ceremony" class="serviceFilter">Ceremony</div>
+          <div id="Ceremony" class="serviceFilter">Ceremony</div>
           <div id="Reception" class="serviceFilter">Reception</div>
           <div id="Ceremony & Reception" class="serviceFilter">
             Ceremony & Reception
@@ -71,37 +71,30 @@
         </div>
         <button class="next">Next</button>
       </div>
-      <div id="screen5" class="screen" data-modal>
-        <h1>Choose Ceremony Arrangement</h1>
-        <div class="ceremony-tab">
-          <!-- <div class="ceremony-bouquets">
-            <div class="ceremony-bouquet1">
-              <div class="ceremony-bouquet1__img">
-                <img
-                  class="bouquet-img"
-                  src="images/bouquets/bouquet1.png"
-                  alt=""
-                />
-              </div>
-              <div class="ceremony-bouquet1__name">Bridal Bouquet</div>
-              <div class="ceremony-bouquet1__amount">0 items</div>
-            </div>
-
-            <div class="ceremony-bouquet2">
-              <div class="ceremony-bouquet1__img">
-                <img
-                  class="bouquet-img"
-                  src="images/bouquets/bouquet2.png"
-                  alt=""
-                />
-              </div>
-              <div class="ceremony-bouquet1__name">Bridesmaid Bouquet</div>
-              <div class="ceremony-bouquet1__amount">0 items</div>
-            </div>
-          </div> -->
-          <div id="imageGallery"></div>
+      <div class="filter-wrapper hidden">
+        <div id="filter1" class="filtred hidden" data-modal>
+          <h1>Choose Ceremony Arrangement</h1>
+          <div class="filter-container">
+            <div id="bridalBouquet">bts</div>
+            <div id="crown">Crown</div>
+          </div>
+          <div class="ceremony-tab">
+            <div id="imageGallery"></div>
+          </div>
+          <button class="next-filter">Next</button>
         </div>
-        <button class="next">Next</button>
+
+        <div id="filter2" class="filtred hidden" data-modal>
+          <h1>Choose Reception Arrangement</h1>
+          <div class="filter-container">
+            <div id="arch">arch</div>
+          </div>
+          <div class="ceremony-tab">
+            <div id="imageGallery"></div>
+          </div>
+          <button class="next-filter">Next</button>
+        </div>
+
         <div id="totalAmount">0</div>
       </div>
 
@@ -147,6 +140,7 @@
     </div>
     <script type="module" src="script.js"></script>
     <script type="module" src="state.js"></script>
+    <script type="module" src="sub-states.js"></script>
 
     <!-- Include script.js as a module -->
   </body>
