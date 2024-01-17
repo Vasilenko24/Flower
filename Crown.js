@@ -1,5 +1,6 @@
 const crown = {
     id: 'crown',
+    image: './images/service/crown.png',
     name: 'Crown',
     amount: 0,
     ivory: {

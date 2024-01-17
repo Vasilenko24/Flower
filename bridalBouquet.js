@@ -1,5 +1,6 @@
 const bridalBouquet = {
     id: 'bridalBouquet',
+    image: './images/service/bridal_bouquet.png',
     name: 'Brital Bouquet',
     amount: 0,
     ivory: {

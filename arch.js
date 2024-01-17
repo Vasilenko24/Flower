@@ -1,5 +1,8 @@
 const arch = {
     id: 'arch',
+    image: './images/service/crown.png',
+    name: 'Arch',
+    amount: 0,
     ivory: {
         roses: [
             {

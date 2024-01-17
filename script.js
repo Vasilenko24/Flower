@@ -126,88 +126,91 @@ function handleQuantityButtonClick(button, quantityInput, spanElement) {
     }
 }
 
-// filtredClicks on images from state
-
-
-// shouw decriptions based on previous info
-
-// Вызываем функцию при загрузке страницы или при необходимости
 
 function showArrangment() {
+    let currentFilter = 'none';
     const btn = document.querySelectorAll('.next-filter');
-    const hideElement = (elementId) => document.getElementById(elementId).classList.add('hidden')
-    const showElement = (elementId) => document.getElementById(elementId).classList.remove('hidden')
+    const hideElement = (elementId) => document.getElementById(elementId).classList.add('hidden');
+    const showElement = (elementId) => document.getElementById(elementId).classList.remove('hidden');
+
     formState.service.forEach(item => {
         switch (item) {
             case 'Ceremony':
-                showElement('filter1')
-                document.querySelector('.filter-wrapper').classList.remove('hidden')
-                btn.forEach(btn => btn.addEventListener('click', () => {
-                    hideElement('filter1')
-                    document.querySelector('.filter-wrapper').classList.add('hidden')
-                    formState.amount = totalAmount.textContent
-                    showForm()
-                }))
+                currentFilter = 'filter1';
+                showElement('filter1');
+                showTabsInfo('filter1', formState.ceremony);
                 break;
             case 'Reception':
-                showElement('filter2')
-                document.querySelector('.filter-wrapper').classList.remove('hidden')
-                btn.forEach(btn => btn.addEventListener('click', () => {
-                    hideElement('filter2')
-                    document.querySelector('.filter-wrapper').classList.add('hidden')
-                    formState.amount = totalAmount.textContent
-                    showForm()
-                }))
+                currentFilter = 'filter2';
+                showElement('filter2');
+                showTabsInfo('filter2', formState.reception);
                 break;
             case 'Ceremony & Reception':
-                let count = 1
-                showScreen(filtred, 'filter', count++)
-                document.querySelector('.filter-wrapper').classList.remove('hidden')
-                btn.forEach(btn => btn.addEventListener('click', () => {
-                    if (count > filtred.length) {
-                        formState.amount = totalAmount.textContent
-                        document.querySelector('.filter-wrapper').classList.add('hidden')
-                        hideScreen(filtred)
-                        showForm()
-                    } else {
-                        showScreen(filtred, 'filter', count++)
-                    }
-
-                }))
+                currentFilter = 'filter1';
+                showElement('filter1');
+                showTabsInfo('filter1', formState.ceremony);
+                showTabsInfo('filter2', formState.reception);
                 break;
         }
-    })
+        document.querySelector('.filter-wrapper').classList.remove('hidden');
+    });
+
+    btn.forEach(button => button.addEventListener('click', () => {
+        if (currentFilter === 'filter1' && formState.service.includes('Ceremony & Reception')) {
+            hideElement('filter1');
+            showElement('filter2');
+            currentFilter = 'filter2';
+        } else {
+            hideElement(currentFilter);
+            document.querySelector('.filter-wrapper').classList.add('hidden');
+            formState.amount = totalAmount.textContent;
+            showForm();
+            currentFilter = 'none';
+        }
+    }));
 }
 
-function tabs() {
-    const btns = document.querySelectorAll('.filter-container div');
-    btns.forEach(btn => btn.addEventListener('click', (e) => {
-        const targetId = e.target.getAttribute('id');
+function showTabsInfo(filterId, items) {
+    const container = document.getElementById(filterId).querySelector('.filter-container');
+
+    items.forEach(item => {
+        const bouquetDiv = document.createElement('div');
+        bouquetDiv.setAttribute('id', item.id);
+        bouquetDiv.innerHTML = `
+            <img id="${item.id}" src=${item.image} alt="${item.name}" />
+            <div class="bouquet-name">${item.name}</div>
+            <div class="bouquet-amount">${item.amount}</div>
+        `;
+        container.appendChild(bouquetDiv);
+    });
+}
+function ClickOnTabs() {
+    // Делегирование событий на более высоком уровне
+    document.querySelector('.filter-wrapper').addEventListener('click', (e) => {
+        // Находим ближайший div к элементу, по которому был совершен клик
+        const targetDiv = e.target.closest('div');
+        if (!targetDiv) return;
+
+        const targetId = targetDiv.getAttribute('id');
         let containerId;
         let targetItem;
 
-        switch (targetId) {
-            case 'crown':
-            case 'bridalBouquet':
-                containerId = 'filter1';
-                targetItem = formState.ceremony.find(item => item.id === targetId);
-                break;
-            case 'arch':
-                containerId = 'filter2';
-                targetItem = formState.reception.find(item => item.id === targetId);
-                break;
+        // Проверяем, существует ли элемент с таким ID в массивах ceremony или reception
+        if (formState.ceremony.some(item => item.id === targetId)) {
+            containerId = 'filter1';
+            targetItem = formState.ceremony.find(item => item.id === targetId);
+        } else if (formState.reception.some(item => item.id === targetId)) {
+            containerId = 'filter2';
+            targetItem = formState.reception.find(item => item.id === targetId);
         }
 
         if (targetItem) {
             const container = document.getElementById(containerId).querySelector('#imageGallery');
             const existingImages = container.querySelectorAll(`[data-id='${targetId}']`);
 
-            // Если изображения уже есть в галерее
             if (existingImages.length > 0) {
-                // Переключаем видимость изображений
                 Array.from(existingImages).forEach(img => img.classList.toggle('hidden'));
             } else {
-                // Если изображений нет, добавляем их
                 formState.colors.forEach(color => {
                     formState.flowers.forEach(flower => {
                         const images = targetItem[color][flower];
@@ -223,10 +226,10 @@ function tabs() {
                 });
             }
         }
-    }));
+    });
 }
 
-tabs();
+ClickOnTabs();
 
 
 // switching filtres
@@ -236,14 +239,9 @@ document.querySelectorAll('.next').forEach(item => item.addEventListener('click'
     console.log(length);
     if (count === length) {
         hideScreen(screen)
-        // console.log('yses');
-        // showScreen()
         showArrangment()
     }
-    if (count === length) {
-        // formState.amount = totalAmount.textContent
-        // showForm()
-    } else {
+    else {
         count++
         showScreen(screen, 'screen', count)
     }
